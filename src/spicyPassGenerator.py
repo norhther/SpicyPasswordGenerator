@@ -28,7 +28,7 @@ def generate(parser_results):
         if not p.is_file():
             res = {}
             if parser_results.display:
-                print("index: 1, pwd: ".format(password))
+                print("index: 1, pwd: {}".format(password))
             res["passwords"] = []
             res["passwords"].append({
                 "id" : 1,
