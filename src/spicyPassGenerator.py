@@ -85,10 +85,10 @@ def buildParser():
                         default = None) 
 
     parser.add_argument("--it", action = "store", dest = "it",
-                    help = """Iterates the passGenerator IT times, adding IT passwords
-                    to the database indicated. --store has to be used with this command
-                    to indicate the file. If not, this argument is ignored.""",
-                    default = None) 
+                        help = """Iterates the passGenerator IT times, adding IT passwords
+                        to the database indicated. --store has to be used with this command
+                        to indicate the file. If not, this argument is ignored.""",
+                        default = None) 
     return parser   
 
 
