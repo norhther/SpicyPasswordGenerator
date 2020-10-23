@@ -1,4 +1,4 @@
-# SpicyPasswordGenerator
+#  🌶️ SpicyPasswordGenerator
 Password generator made with python, with some spicy features. Can be used to generate giant json password files for testing purposes.
 It also generates the hash for md5, sha256, sha512, sha3_224, sha3_512, blake2s and blake2b.
 
