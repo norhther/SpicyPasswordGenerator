@@ -1,16 +1,17 @@
 # SpicyPasswordGenerator
-Password generator made with python with spicy features. Can be used to generate giantjson password files for testing purposes.
+Password generator made with python, with some spicy features. Can be used to generate giant json password files for testing purposes.
+It also generates the hash for md5, sha256, sha512, sha3_224, sha3_512, blake2s and blake2b.
 
 ## Usage
 ```
   python3 spicyPasswordGenerator.py -h
   
-  -s, -S         Use special letters for generating the password
-  -c, -C         Use capital letters for generating the password
-  -n, -N         Use numbers for generating the password
+  -s, -S         Use special letters
+  -c, -C         Use capital letters
+  -n, -N         Use numbers
   --size SIZE    Indicates the size of the generated password, default = 10
-  --save FILE    Saves the generated password in FILE, with json format. If the file exists, the passwords are
-                 appended
+  --save FILE    Saves the generated password in FILE with json format. If file exists, the passwords are
+                 appended to it
   -d, --display  Display the generated passwords (not recommended with -it)
   --it IT        Iterates the passGenerator IT times, adding IT passwords to the database indicated. --store
                  has to be used with this command to indicate the file. If not, this argument is ignored.
