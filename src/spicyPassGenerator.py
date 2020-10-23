@@ -4,6 +4,7 @@ import random
 import string
 import json
 import pathlib
+import hashlib
 from datetime import datetime
 
 __author__ = "norhther"
@@ -32,8 +33,16 @@ def generate(parser_results):
             res["passwords"] = []
             res["passwords"].append({
                 "id" : 1,
+                "size" : parser_results.size,
                 "created" : datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                "password" : password
+                "password" : password,
+                "md5" : hashlib.new("md5", password.encode('utf-8')).hexdigest(),
+                "sha256" : hashlib.new("sha256", password.encode('utf-8')).hexdigest(),
+                "sha512" : hashlib.new("sha512", password.encode('utf-8')).hexdigest(),
+                "sha3_224" : hashlib.new("sha3_224", password.encode('utf-8')).hexdigest(),
+                "sha3_512" : hashlib.new("sha3_512", password.encode('utf-8')).hexdigest(),
+                "blake2s" : hashlib.new("blake2s", password.encode('utf-8')).hexdigest(),
+                "blake2b" : hashlib.new("blake2b", password.encode('utf-8')).hexdigest()
             })
             it -= 1
             with open(parser_results.file, "w") as f:
@@ -48,9 +57,16 @@ def generate(parser_results):
                     print("index: {}, pwd: {}".format(res["passwords"][-1]["id"] + 1, password))
                 res["passwords"].append({
                     "id": res["passwords"][-1]["id"] + 1,
+                    "size" : parser_results.size,
                     "created" : datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                    "password" : password
-                    })
+                    "password" : password,
+                    "sha256" : hashlib.new("sha256", password.encode('utf-8')).hexdigest(),
+                    "sha512" : hashlib.new("sha512", password.encode('utf-8')).hexdigest(),
+                    "sha3_224" : hashlib.new("sha3_224", password.encode('utf-8')).hexdigest(),
+                    "sha3_512" : hashlib.new("sha3_512", password.encode('utf-8')).hexdigest(),
+                    "blake2s" : hashlib.new("blake2s", password.encode('utf-8')).hexdigest(),
+                    "blake2b" : hashlib.new("blake2b", password.encode('utf-8')).hexdigest()
+                })
             f.write(json.dumps(res, indent = 4))
                 
 
