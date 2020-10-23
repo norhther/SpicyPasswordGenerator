@@ -23,8 +23,8 @@ Generating a json with 1M passwords of size 100
   * 8Gb RAM
   * Ubuntu 20.04 LTS
   ```
-  norhther@norhther-ThinkPad-X1-Carbon-5th:~/Escritorio$ time ./spicyPassGenerator.py -scn --size 100 --save pass.txt --it 1000000
-      real	0m23,416s
-      user	0m22,221s
-      sys	0m0,784s
+norhther@norhther-ThinkPad-X1-Carbon-5th:~/SpicyPasswordGenerator/src$ time ./spicyPassGenerator.py -scn --size 100 --save pass.txt --it 1000000
+    real	0m52,843s
+    user	0m40,606s
+    sys	0m3,293s
 ```
