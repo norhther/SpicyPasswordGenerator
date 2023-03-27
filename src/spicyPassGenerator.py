@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 import argparse
-import random
-import string
 import json
 import pathlib
+import random
 import hashlib
+import string
 from datetime import datetime
 
 __author__ = "norhther"
@@ -13,6 +13,11 @@ def generate(parser_results):
     words_to_use = string.ascii_lowercase
     if parser_results.use_special:
         words_to_use += string.punctuation
+        # do not use the following characters: " ' ` \ /
+        char = '"\'`\\/'
+        table = str.maketrans(char, len(char) * '\0')
+        words_to_use = words_to_use.translate(table)
+
     if parser_results.use_capital:
         words_to_use += string.ascii_uppercase
     if parser_results.use_numbers:
@@ -21,53 +26,37 @@ def generate(parser_results):
     password = "".join(random.choices(words_to_use, k=parser_results.size))
     if parser_results.display:
         print(password)
+
     if parser_results.file is not None:
-        it = 1
-        if parser_results.it:
-            it = int(parser_results.it)
+        it = int(parser_results.it) if parser_results.it else 1
         p = pathlib.Path(parser_results.file)
-        if not p.is_file():
-            res = {}
+        res = {"passwords": []}
+
+        if p.is_file():
+            with open(parser_results.file, "r") as f:
+                res = json.load(f)
+
+        for i in range(it):
+            password = "".join(random.choices(words_to_use, k=parser_results.size))
+
             if parser_results.display:
-                print("index: 1, pwd: {}".format(password))
-            res["passwords"] = []
+                print(f"index: {len(res['passwords']) + 1}, pwd: {password}")
+
+            password_hash = {
+                algorithm: hashlib.new(algorithm, password.encode('utf-8')).hexdigest()
+                for algorithm in ["md5", "sha256", "sha512", "sha3_224", "sha3_512", "blake2s", "blake2b"]
+            }
+
             res["passwords"].append({
-                "id" : 1,
-                "size" : parser_results.size,
-                "created" : datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                "password" : password,
-                "md5" : hashlib.new("md5", password.encode('utf-8')).hexdigest(),
-                "sha256" : hashlib.new("sha256", password.encode('utf-8')).hexdigest(),
-                "sha512" : hashlib.new("sha512", password.encode('utf-8')).hexdigest(),
-                "sha3_224" : hashlib.new("sha3_224", password.encode('utf-8')).hexdigest(),
-                "sha3_512" : hashlib.new("sha3_512", password.encode('utf-8')).hexdigest(),
-                "blake2s" : hashlib.new("blake2s", password.encode('utf-8')).hexdigest(),
-                "blake2b" : hashlib.new("blake2b", password.encode('utf-8')).hexdigest()
+                "id": len(res["passwords"]) + 1,
+                "size": parser_results.size,
+                "created": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                "password": password,
+                **password_hash
             })
-            it -= 1
-            with open(parser_results.file, "w") as f:
-                json.dump(res, f, indent = 4)
-        res = None
-        with open(parser_results.file, "r") as f:
-            res = json.load(f)
+
         with open(parser_results.file, "w") as f:
-            for _ in range(0, it):
-                password = "".join(random.choices(words_to_use, k=parser_results.size))
-                if parser_results.display:
-                    print("index: {}, pwd: {}".format(res["passwords"][-1]["id"] + 1, password))
-                res["passwords"].append({
-                    "id": res["passwords"][-1]["id"] + 1,
-                    "size" : parser_results.size,
-                    "created" : datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                    "password" : password,
-                    "sha256" : hashlib.new("sha256", password.encode('utf-8')).hexdigest(),
-                    "sha512" : hashlib.new("sha512", password.encode('utf-8')).hexdigest(),
-                    "sha3_224" : hashlib.new("sha3_224", password.encode('utf-8')).hexdigest(),
-                    "sha3_512" : hashlib.new("sha3_512", password.encode('utf-8')).hexdigest(),
-                    "blake2s" : hashlib.new("blake2s", password.encode('utf-8')).hexdigest(),
-                    "blake2b" : hashlib.new("blake2b", password.encode('utf-8')).hexdigest()
-                })
-            f.write(json.dumps(res, indent = 4))
+            json.dump(res, f, indent=4)
                 
 
     
